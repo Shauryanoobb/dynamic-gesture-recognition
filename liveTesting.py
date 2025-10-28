@@ -6,7 +6,7 @@ from collections import deque
 # ----------------------------
 # Load trained model
 # ----------------------------
-model = tf.keras.models.load_model("gesture_3dcnn.keras")
+model = tf.keras.models.load_model("gesture_3dcnn_mirrored.keras")
 print("✅ Model loaded successfully!")
 
 # Gesture classes
