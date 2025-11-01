@@ -72,7 +72,7 @@ while True:
     frame_norm = frame_rgb / 255.0
     frame_buffer.append(frame_norm)
 
-    if len(frame_buffer) == SEQ_LEN:
+    if len(frame_buffer) == SEQ_LEN: #also do you need prediction every frame?
         x = np.expand_dims(np.array(frame_buffer), axis=0)
         pred = model.predict(x, verbose=0)[0]
         cls = np.argmax(pred)
