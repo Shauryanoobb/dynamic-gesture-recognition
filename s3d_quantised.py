@@ -20,7 +20,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 print("🧠 Loading quantized S3D model...")
 
 # Load quantized checkpoint
-checkpoint = torch.load("s3d_gesture_int8.pth", map_location="cpu")
+checkpoint = torch.load("models/s3d_gesture_int8.pth", map_location="cpu")
 quantized_state_dict = checkpoint['state_dict']
 scales = checkpoint['scales']
 GESTURES = checkpoint['gestures']

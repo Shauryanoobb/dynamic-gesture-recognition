@@ -31,7 +31,7 @@ model.classifier = nn.Sequential(
 )
 
 # Load fine-tuned weights
-model.load_state_dict(torch.load("s3d_gesture.pth", map_location=device))
+model.load_state_dict(torch.load("models/s3d_gesture.pth", map_location=device))
 model = model.to(device)
 model.eval()
 
