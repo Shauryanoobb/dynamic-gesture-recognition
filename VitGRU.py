@@ -39,7 +39,7 @@ model = Model(video_input, output)
 
 # Load weights only
 model.load_weights("models/new_best_112_mobilevit_gru.h5")  # <-- change this to the .h5 weights you saved
-
+model.save_weights("weights_only_mobilevit_gru.weights.h5")
 # ===== Frame Buffer =====
 frame_buffer = deque(maxlen=frames)  # stores last N frames
 
