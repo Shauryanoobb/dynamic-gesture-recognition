@@ -1,4 +1,4 @@
-#check this, wont work on mac
+#check this, wont work on mac-> works on windows/linux
 import cv2
 import numpy as np
 from collections import deque
