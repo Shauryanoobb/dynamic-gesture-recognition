@@ -23,7 +23,7 @@ gesture_classes = ['FistHalt', 'Swipe', 'ThumbsUp', 'Wave', 'ZoomIn']
 model = swin3d_t(pretrained=False)
 num_features = model.head.in_features
 model.head = nn.Linear(num_features, len(gesture_classes))
-model.load_state_dict(torch.load("best_swin3d_model.pth", map_location=device))
+model.load_state_dict(torch.load("models/best_swin3d_model.pth", map_location=device))
 model = model.to(device)
 model.eval()
 
