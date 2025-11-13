@@ -6,11 +6,11 @@ from collections import deque
 # ----------------------------
 # Load trained model
 # ----------------------------
-model = tf.keras.models.load_model("gesture_3dcnn_mirrored.keras")
+model = tf.keras.models.load_model("models/3dCNN10Signs.keras")
 print("✅ Model loaded successfully!")
 
 # Gesture classes
-gesture_classes = ['FistHalt', 'Swipe', 'ThumbsUp', 'Wave', 'ZoomIn']
+Gestures= ['Again', 'FistHalt', 'Shoot', 'Sign', 'Swipe', 'Talk', 'Teacher', 'ThumbsUp', 'Wave', 'ZoomIn']
 
 # ----------------------------
 # Parameters
@@ -58,7 +58,7 @@ while True:
 
         # Display prediction if confident enough
         if conf > CONF_THRESHOLD:
-            text = f"{gesture_classes[pred_class]} ({conf*100:.1f}%)"
+            text = f"{Gestures[pred_class]} ({conf*100:.1f}%)"
             color = (0, 255, 0)
         else:
             text = "..."

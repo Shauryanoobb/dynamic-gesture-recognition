@@ -1,7 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 
-MODEL_PATH = 'models/gesture_3dcnn_mirrored.keras'
+MODEL_PATH = 'models/3dCNN10Signs.keras'
 model = keras.models.load_model(MODEL_PATH)
 
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
@@ -15,7 +15,7 @@ converter.target_spec.supported_ops = [
 
 tflite_model = converter.convert()
 
-tflite_path = 'models/checking3dCnnquantisation.tflite'
+tflite_path = 'models/3dCNN10signs.tflite'
 with open(tflite_path, 'wb') as f:
     f.write(tflite_model)
 
