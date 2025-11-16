@@ -2,17 +2,11 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from collections import deque
-print(
-    tf.__version__
-)
-# ===== CONFIG =====
-# GESTURES = ['FistHalt', 'Swipe', 'ThumbsUp', 'Wave', 'ZoomIn']
+
 GESTURES = ['Again', 'FistHalt', 'Shoot', 'Sign', 'Swipe', 'Talk', 'Teacher', 'ThumbsUp', 'Wave', 'ZoomIn']
 
 frames = 16
 img_size = 112
-# tflite_model_path = "quantised_GRU_QT.tflite"
-# tflite_model_path = "models/quant_mobilevit_gru_112.tflite"
 tflite_model_path = "quantised_GRU_QT.tflite"
 
 # ===== Load TFLite model =====
