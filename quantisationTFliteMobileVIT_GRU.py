@@ -3,7 +3,8 @@ from tensorflow.keras.models import Model
 from keras_vision.MobileViT_v1 import build_MobileViT_v1
 
 # ===== CONFIG =====
-GESTURES = ['FistHalt', 'Swipe', 'ThumbsUp', 'Wave', 'ZoomIn']
+# GESTURES = ['FistHalt', 'Swipe', 'ThumbsUp', 'Wave', 'ZoomIn']
+GESTURES = ['Again', 'FistHalt', 'Shoot', 'Sign', 'Swipe', 'Talk', 'Teacher', 'ThumbsUp', 'Wave', 'ZoomIn']
 frames = 16
 img_size = 112
 num_classes = len(GESTURES)
@@ -28,7 +29,7 @@ output = tf.keras.layers.Dense(num_classes, activation="softmax")(x)
 model = Model(video_input, output)
 
 # ===== Load pretrained weights =====
-model.load_weights("models/new_best_112_mobilevit_gru.h5")
+model.load_weights("10signs_5people_16frames_best_mobilevit_gru_unquantisable.h5")
 
 print("✅ Original model loaded successfully.")
 
@@ -59,6 +60,6 @@ tflite_quant_model = converter.convert()
 print("✅ Model converted successfully with dynamic range quantization!")
 
 # === Save the quantized model ===
-with open("model_dynamic_quant.tflite", "wb") as f:
+with open("10_signs_unquantisable_model_dynamic_quant.tflite", "wb") as f:
     f.write(tflite_quant_model)
 print("💾 Saved as 'model_dynamic_quant.tflite'")

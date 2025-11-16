@@ -3,7 +3,7 @@ from tensorflow.keras import layers, Model
 from keras_vision.MobileViT_v1 import build_MobileViT_v1
 
 # === CONFIG ===
-GESTURES = ['FistHalt', 'Swipe', 'ThumbsUp', 'Wave', 'ZoomIn']
+GESTURES = ['Again', 'FistHalt', 'Shoot', 'Sign', 'Swipe', 'Talk', 'Teacher', 'ThumbsUp', 'Wave', 'ZoomIn']
 frames = 16
 img_size = 112
 num_classes = len(GESTURES)
@@ -174,7 +174,7 @@ model = tf.keras.Model(video_input, output)
 dummy_input = tf.random.uniform((1, frames,img_size,img_size, 3))
 model(dummy_input)
 
-MODEL_PATH = "fucktimedistributed/best_ftd_99.weights.h5"
+MODEL_PATH = "fucktimedistributed/FuckTimeDistributed_final_3000.keras"
 model.load_weights(MODEL_PATH)
 
 model.trainable = False
@@ -187,7 +187,7 @@ converter = tf.lite.TFLiteConverter.from_keras_model(model)
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
 tflite_model = converter.convert()
 
-with open("fucktimedistributed/9926_trained_quantised_ftd.tflite","wb") as f:
+with open("fucktimedistributed/3000_9926_quantised_ftd.tflite","wb") as f:
     f.write(tflite_model)
     
 print("goat nano")
