@@ -6,6 +6,7 @@ model = keras.models.load_model(MODEL_PATH)
 
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
+converter.target_spec.supported_types = [tf.float16]
 
 # ADD THIS LINE - it's critical for 3D CNN models
 converter.target_spec.supported_ops = [
