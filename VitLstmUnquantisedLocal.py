@@ -10,8 +10,8 @@ from collections import deque
 # -----------------------------
 IMG_SIZE = 256 #change this according to the model trained
 SEQ_LEN = 16 #last 16 frames to be considered for a gesture
-GESTURES = ['FistHalt', 'Swipe', 'ThumbsUp', 'Wave', 'ZoomIn']
-MODEL_PATH = "models/mobilevit_lstm_256_pretrained_true.keras"
+GESTURES= ['Again', 'FistHalt', 'Shoot', 'Sign', 'Swipe', 'Talk', 'Teacher', 'ThumbsUp', 'Wave', 'ZoomIn']
+MODEL_PATH = "models/mobilevit_lstm_10signs.keras"
 CONF_THRESHOLD = 0.6
 frame_skip = 2   # play with this
 frame_count = 0
