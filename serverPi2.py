@@ -5,18 +5,11 @@ import struct
 SERVER_IP = "10.200.80.191"
 PORT = 5000
 
-# ------------------------------
-# Frame skip config
-# ------------------------------
-FRAME_SKIP = 2   # send 1 frame out of every 2 (reduce lag significantly)
-frame_counter = 0
-
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((SERVER_IP, PORT))
 print("Connected to Raspberry Pi")
 
 def send_frame(frame):
-    # Lower JPEG quality (20) for faster networking
     _, jpeg = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 20])
     data = jpeg.tobytes()
     msg = struct.pack(">I", len(data)) + data
@@ -50,26 +43,13 @@ while True:
         break
 
     frame = cv2.flip(frame, 1)
-    frame_counter += 1
 
-    # ------------------------------
-    # Apply crop + resize for sending
-    # ------------------------------
+    # Send to Pi
     cropped = crop_center(frame, crop_size=200)
     small = cv2.resize(cropped, (160, 160))
+    send_frame(cropped)
 
-    # ------------------------------
-    # Frame skip logic
-    # ------------------------------
-    if frame_counter % FRAME_SKIP == 0:
-        send_frame(small)
-    else:
-        # Send empty packet length = 0 (tells Pi: skip)
-        sock.sendall(struct.pack(">I", 0))
-
-    # ------------------------------
-    # Receive inference when available
-    # ------------------------------
+    # Receive inference
     gesture, conf = recv_prediction()
     if gesture != "None":
         cv2.putText(frame, f"{gesture} ({conf:.2f})",
