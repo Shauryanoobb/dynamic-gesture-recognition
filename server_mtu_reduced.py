@@ -10,8 +10,7 @@ MAC_PRED_PORT = 6005
 prediction_text = "Waiting..."
 prediction_lock = threading.Lock()
 
-# Chunking parameters
-CHUNK_SIZE = 60000  # Max data per chunk (header is 8 bytes, so total = 60008)
+#see if resizing on mac side leads to lesser latency, also focus on brining good results because latency is already low
 
 # ---------- UDP Prediction Receiver ----------
 def listen_predictions():
@@ -37,8 +36,8 @@ cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     raise RuntimeError("❌ Could not open webcam")
 
-FRAME_SKIP = 3  # Send every 3rd frame (reduced from 4 for better temporal model performance)
-JPEG_QUALITY = 20  # Lower quality to reduce size
+FRAME_SKIP = 1  # Send every 3rd frame (reduced from 4 for better temporal model performance)
+JPEG_QUALITY = 60  # increase this and see do we get better results? tradeoff with latency, if udp is costly
 MAX_PACKET_SIZE = 1472  # MTU 1500 - IP header (20) - UDP header (8) = safe UDP payload
 
 frame_count = 0
@@ -46,7 +45,7 @@ frame_id = 0  # Unique ID for each frame sent
 
 w = int(cap.get(3))
 h = int(cap.get(4))
-roi_size = int(w * 0.3)
+roi_size = int(w * 0.5)
 x = (w - roi_size) // 2
 y = (h - roi_size) // 2
 
@@ -59,7 +58,7 @@ while True:
     if not ret:
         continue
 
-    frame = cv2.flip(frame, 1)
+    frame = cv2.flip(frame, 1) #see if needed, i dont think it is right? It is more needed for your intuition when seeing yourself on screen
     frame_count += 1
 
     # Draw ROI
@@ -88,13 +87,8 @@ while True:
             header = struct.pack(">IHH", frame_id, chunk_num, total_chunks)
             packet = header + chunk_data
             
-            # Print actual packet size
+            # Print actual chunk size
             print(f"  📦 Chunk {chunk_num}/{total_chunks-1}: header={len(header)} + data={len(chunk_data)} = TOTAL {len(packet)} bytes")
-            
-            # Verify packet size
-            if len(packet) > 65507:
-                print(f"  ⚠️ ERROR: Packet too large: {len(packet)} bytes (max is 65507)")
-                continue
             
             try:
                 sock_video.sendto(packet, (PI_IP, VIDEO_PORT))
