@@ -31,6 +31,8 @@ def preprocess(img):
     img = img.astype("float32") / 255.0
     return img
 
+#check the average time a predictiont takes, to identify bottlenecks and how frequently we can predict
+# 400 FUCKING MS? CHECK IF THIS IS TRUE
 def predict():
     arr = np.expand_dims(np.array(frame_buffer, dtype=np.float32), axis=0)
     interpreter.set_tensor(input_details[0]['index'], arr)
@@ -53,7 +55,7 @@ frame_chunks = {}
 expected_chunks = {}
 
 frame_count = 0
-INFERENCE_EVERY = 4  # Run inference every 4 frames to reduce load
+INFERENCE_EVERY = 10  # Run inference every 4 frames to reduce load
 last_prediction = ("Buffering", 0.0)  # Store last prediction to send continuously
 
 while True:
@@ -79,7 +81,6 @@ while True:
         
         # Check if all chunks received
         if len(frame_chunks[frame_id]) == expected_chunks[frame_id]:
-            # Reconstruct frame
             sorted_chunks = [frame_chunks[frame_id][i] for i in range(total_chunks)]
             full_data = b"".join(sorted_chunks)
             
@@ -91,7 +92,7 @@ while True:
             del frame_chunks[frame_id]
             del expected_chunks[frame_id]
             
-            # Clean up very old frames (keep only last 3)
+
             if len(frame_chunks) > 3:
                 oldest = min(frame_chunks.keys())
                 del frame_chunks[oldest]
@@ -102,6 +103,7 @@ while True:
                 frame_buffer.append(preprocess(frame))
                 frame_count += 1
                 
+                #notice how we append the frame correctly each time but only predict every 4th frame it gets
                 # Run inference periodically
                 if len(frame_buffer) == FRAMES and frame_count % INFERENCE_EVERY == 0:
                     gesture, conf = predict()

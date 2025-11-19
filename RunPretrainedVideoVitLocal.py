@@ -15,15 +15,15 @@ CONF_THRESHOLD = 0.6
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Gesture classes (must match training)
-gesture_classes = ['FistHalt', 'Swipe', 'ThumbsUp', 'Wave', 'ZoomIn']
+GESTURES = ['Again', 'FistHalt', 'Shoot', 'Sign', 'Swipe', 'Talk', 'Teacher', 'ThumbsUp', 'Wave', 'ZoomIn']
 
 # ----------------------------
 # LOAD MODEL
 # ----------------------------
 model = swin3d_t(pretrained=False)
 num_features = model.head.in_features
-model.head = nn.Linear(num_features, len(gesture_classes))
-model.load_state_dict(torch.load("models/best_swin3d_model.pth", map_location=device))
+model.head = nn.Linear(num_features, len(GESTURES))
+model.load_state_dict(torch.load("models/pretrainedVideoVits/best_swin3d_model (1).pth", map_location=device))
 model = model.to(device)
 model.eval()
 
@@ -72,7 +72,7 @@ while True:
             pred_class = pred_class.item()
 
         if conf > CONF_THRESHOLD:
-            text = f"{gesture_classes[pred_class]} ({conf*100:.1f}%)"
+            text = f"{GESTURES[pred_class]} ({conf*100:.1f}%)"
             color = (0, 255, 0)
         else:
             text = "..."
