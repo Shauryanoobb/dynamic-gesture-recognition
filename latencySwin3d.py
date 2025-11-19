@@ -9,7 +9,7 @@ from torchvision.models.video import swin3d_t
 # ------------------------------
 FRAMES = 16
 IMG_SIZE = 112
-MODEL_PATH = "models/pretrainedVideoVits/best_swin3d_model (1).pth"
+MODEL_PATH = "models/best_swin3d_model (1).pth"
 NUM_WARMUP = 10
 NUM_ITERATIONS = 200
 device = "cuda" if torch.cuda.is_available() else "cpu"
