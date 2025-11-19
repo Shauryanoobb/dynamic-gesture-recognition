@@ -8,10 +8,10 @@ from collections import deque
 # -----------------------------
 # CONFIG
 # -----------------------------
-IMG_SIZE = 256 #change this according to the model trained
+IMG_SIZE = 112 #change this according to the model trained
 SEQ_LEN = 16 #last 16 frames to be considered for a gesture
-GESTURES= ['Again', 'FistHalt', 'Shoot', 'Sign', 'Swipe', 'Talk', 'Teacher', 'ThumbsUp', 'Wave', 'ZoomIn']
-MODEL_PATH = "models/mobilevit_lstm_10signs.keras"
+GESTURES= ['Again', 'Shoot', 'Sign', 'Swipe', 'Talk', 'Teacher', 'ThumbsUp', 'Wave', 'ZoomIn']
+MODEL_PATH = "models/LstmVit/mobilevit_lstm_9.keras"
 CONF_THRESHOLD = 0.6
 frame_skip = 2   # play with this
 frame_count = 0
@@ -23,14 +23,14 @@ backbone = build_MobileViT_v1(
     pretrained=True,
     include_top=False,
     num_classes=0,
-    #input_shape=(IMG_SIZE, IMG_SIZE, 3) #uncomment if 112 
+    input_shape=(IMG_SIZE, IMG_SIZE, 3) #uncomment if 112 
 )
 backbone.trainable = False
 
 video_in = layers.Input((SEQ_LEN, IMG_SIZE, IMG_SIZE, 3))
 x = layers.TimeDistributed(backbone)(video_in)
 x = layers.TimeDistributed(layers.GlobalAveragePooling2D())(x)
-x = layers.Bidirectional(layers.LSTM(256, dropout=0.3, return_sequences=False))(x)
+x = layers.LSTM(128, dropout=0.3, return_sequences=False)(x)
 x = layers.Dense(128, activation='relu')(x)
 x = layers.Dropout(0.3)(x)
 out = layers.Dense(len(GESTURES), activation='softmax')(x)
