@@ -6,11 +6,11 @@ from collections import deque
 # ----------------------------
 # Load trained model
 # ----------------------------
-model = tf.keras.models.load_model("models/3dCNN10Signs.keras")
+model = tf.keras.models.load_model("models/cnn/3dCNN9Signs.keras")
 print("✅ Model loaded successfully!")
 
 # Gesture classes
-Gestures= ['Again', 'FistHalt', 'Shoot', 'Sign', 'Swipe', 'Talk', 'Teacher', 'ThumbsUp', 'Wave', 'ZoomIn']
+Gestures= ['Again', 'Shoot', 'Sign', 'Swipe', 'Talk', 'Teacher', 'ThumbsUp', 'Wave', 'ZoomIn']
 
 # ----------------------------
 # Parameters
